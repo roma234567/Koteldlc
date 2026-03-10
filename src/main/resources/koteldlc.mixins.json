@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "com.koteldlc.client.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "KotelDLCMixinConfig",
+    "MinecraftClientMixin",
+    "ClientPlayerEntityMixin",
+    "InGameHudMixin",
+    "WorldRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
