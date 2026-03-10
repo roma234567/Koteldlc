@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "koteldlc",
+  "version": "1.0.0",
+  "name": "KotelDLC",
+  "description": "Fabric PvP client with modular architecture.",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.koteldlc.client.KotelDLCClient"
+    ]
+  },
+  "mixins": [
+    "koteldlc.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.15.11",
+    "fabric-api": "*",
+    "minecraft": "1.21.1"
+  }
+}
