@@ -1,7 +1,7 @@
 package com.koteldlc.client.config;
 
 import com.google.gson.*;
-import com.koteldlc.client.gui.settings.Setting;
+import com.koteldlc.client.gui.settings.*;
 import com.koteldlc.client.module.Module;
 import com.koteldlc.client.module.ModuleManager;
 
@@ -20,7 +20,14 @@ public class ConfigManager {
             obj.addProperty("key", module.getKey());
             JsonObject settings = new JsonObject();
             for (Setting<?> setting : module.getSettings()) {
-                settings.addProperty(setting.getName(), String.valueOf(setting.getValue()));
+                Object value = setting.getValue();
+                if (value instanceof Number number) {
+                    settings.addProperty(setting.getName(), number);
+                } else if (value instanceof Boolean bool) {
+                    settings.addProperty(setting.getName(), bool);
+                } else {
+                    settings.addProperty(setting.getName(), String.valueOf(value));
+                }
             }
             obj.add("settings", settings);
             root.add(module.getName(), obj);
@@ -40,7 +47,32 @@ public class ConfigManager {
                 JsonObject obj = root.getAsJsonObject(module.getName());
                 module.setToggled(obj.get("enabled").getAsBoolean());
                 module.setKey(obj.get("key").getAsInt());
+
+                if (!obj.has("settings")) {
+                    continue;
+                }
+                JsonObject settingsObj = obj.getAsJsonObject("settings");
+                for (Setting<?> setting : module.getSettings()) {
+                    if (!settingsObj.has(setting.getName())) {
+                        continue;
+                    }
+                    JsonElement value = settingsObj.get(setting.getName());
+                    applyValue(setting, value);
+                }
             }
         } catch (Exception ignored) { }
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private void applyValue(Setting setting, JsonElement value) {
+        if (setting instanceof BooleanSetting) {
+            setting.setValue(value.getAsBoolean());
+        } else if (setting instanceof ColorSetting) {
+            setting.setValue(value.getAsInt());
+        } else if (setting instanceof SliderSetting) {
+            setting.setValue(value.getAsDouble());
+        } else if (setting instanceof ModeSetting) {
+            setting.setValue(value.getAsString());
+        }
     }
 }
