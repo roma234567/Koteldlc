@@ -2,6 +2,7 @@ package com.koteldlc.client.module;
 
 import com.koteldlc.client.module.modules.combat.*;
 import com.koteldlc.client.module.modules.movement.*;
+import com.koteldlc.client.module.modules.visual.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,6 +24,20 @@ public class ModuleManager {
         register(new NoFall());
         register(new Sprint());
         register(new Strafe());
+
+        // ESP Settings
+        register(new HurtTimeESP());
+        register(new InvulnerableESP());
+        register(new SneakingESP());
+        register(new GlidingESP());
+        register(new SleepingESP());
+        register(new TargetESP());
+
+        // HUD Settings
+        register(new InGameTimeHUD());
+        register(new RealTimeHUD());
+        register(new SessionTimeHUD());
+        register(new ServerTimeHUD());
     }
 
     public void register(Module module) { modules.add(module); }
