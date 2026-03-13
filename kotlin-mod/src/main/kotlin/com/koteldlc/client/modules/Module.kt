@@ -24,7 +24,7 @@ abstract class Module(
         if (enabled) onEnable() else onDisable()
     }
 
-    fun applyEnabled(state: Boolean) {
+    fun setEnabled(state: Boolean) {
         if (enabled != state) {
             toggle()
         }
@@ -53,7 +53,7 @@ abstract class Module(
 
     open fun load(json: JsonObject) {
         if (json.has("enabled")) {
-            applyEnabled(json.get("enabled").asBoolean)
+            setEnabled(json.get("enabled").asBoolean)
         }
         val settingsJson = json.getAsJsonObject("settings") ?: return
         settings.forEach { (key, current) ->

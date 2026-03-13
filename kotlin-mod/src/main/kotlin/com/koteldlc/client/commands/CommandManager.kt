@@ -19,15 +19,9 @@ class CommandManager(private val moduleManager: ModuleManager) {
         if (parts.isEmpty()) return false
 
         val cmdName = parts.first().lowercase()
-        val command = commands[cmdName]
-        if (command == null) {
-            println("[Command] Неизвестная команда: .$cmdName (используй .help)")
-            return true
-        }
-
+        val command = commands[cmdName] ?: return false
         val args = parts.drop(1)
-        val response = runCatching { command.execute(args) }
-            .getOrElse { "Ошибка выполнения: ${it.message ?: it.javaClass.simpleName}" }
+        val response = command.execute(args)
 
         // Тут можно вывести в in-game чат.
         println("[Command] $response")
