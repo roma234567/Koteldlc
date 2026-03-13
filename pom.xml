@@ -16,7 +16,6 @@
         <yarn.mappings>1.21.1+build.3</yarn.mappings>
         <fabric.loader.version>0.15.11</fabric.loader.version>
         <fabric.api.version>0.102.1+1.21.1</fabric.api.version>
-        <loom.version>1.7</loom.version>
         <mixin.version>0.8.5</mixin.version>
     </properties>
 
@@ -26,23 +25,19 @@
             <url>https://maven.fabricmc.net/</url>
         </repository>
         <repository>
-            <id>maven-central</id>
-            <url>https://repo1.maven.org/maven2/</url>
-        </repository>
-        <repository>
             <id>minecraft-libraries</id>
             <url>https://libraries.minecraft.net/</url>
+        </repository>
+        <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
         </repository>
     </repositories>
 
     <pluginRepositories>
         <pluginRepository>
-            <id>fabric</id>
-            <url>https://maven.fabricmc.net/</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>maven-central</id>
-            <url>https://repo1.maven.org/maven2/</url>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
         </pluginRepository>
     </pluginRepositories>
 
@@ -83,12 +78,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>net.fabricmc</groupId>
-                <artifactId>fabric-loom</artifactId>
-                <version>${loom.version}</version>
-                <extensions>true</extensions>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
