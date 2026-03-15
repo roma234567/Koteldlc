@@ -19,11 +19,14 @@ public class ModuleManager {
         register(new ESP());
         register(new TargetHUD());
         register(new KillAura());
+        register(new AIKillAura());
         register(new TeleportAura());
         register(new Speed());
         register(new NoFall());
         register(new Sprint());
         register(new Strafe());
+
+        register(new ThemeEditor());
 
         // ESP Settings
         register(new HurtTimeESP());

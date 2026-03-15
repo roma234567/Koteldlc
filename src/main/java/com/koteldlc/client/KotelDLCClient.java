@@ -24,5 +24,6 @@ public class KotelDLCClient implements ClientModInitializer {
         KEYBIND_MANAGER.register(MODULE_MANAGER.getModules());
         CONFIG_MANAGER.load(MODULE_MANAGER);
         CLICK_GUI.rebuild(MODULE_MANAGER);
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> CONFIG_MANAGER.save(MODULE_MANAGER)));
     }
 }
