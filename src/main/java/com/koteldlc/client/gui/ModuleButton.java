@@ -1,5 +1,6 @@
 package com.koteldlc.client.gui;
 
+import com.koteldlc.client.gui.settings.SliderSetting;
 import com.koteldlc.client.module.Module;
 
 /**
@@ -20,6 +21,14 @@ public class ModuleButton {
 
     public void onRightClick() {
         settingsOpen = !settingsOpen;
+    }
+
+    public void increase(SliderSetting slider) {
+        slider.increment();
+    }
+
+    public void decrease(SliderSetting slider) {
+        slider.decrement();
     }
 
     public Module getModule() {

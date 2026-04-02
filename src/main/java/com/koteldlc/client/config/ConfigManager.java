@@ -8,12 +8,51 @@ import com.koteldlc.client.module.ModuleManager;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
 
 public class ConfigManager {
     private static final Path FILE = Path.of("koteldlc", "config.json");
     private static final Path AI_KILLAURA_FILE = Path.of("koteldlc", "ai-killaura.json");
 
     public void save(ModuleManager manager) {
+        this.manager = manager;
+        saveCurrent(FILE, manager);
+        saveAiKillAura(manager);
+    }
+
+    public void load(ModuleManager manager) {
+        this.manager = manager;
+        loadFrom(FILE, manager);
+        loadAiKillAura(manager);
+    }
+
+    public void saveProfile(String name) {
+        if (manager == null || name == null || name.isBlank()) return;
+        Path profileFile = PROFILES_DIR.resolve(name + ".json");
+        saveCurrent(profileFile, manager);
+    }
+
+    public void loadProfile(String name) {
+        if (manager == null || name == null || name.isBlank()) return;
+        Path profileFile = PROFILES_DIR.resolve(name + ".json");
+        loadFrom(profileFile, manager);
+    }
+
+    public List<String> listProfiles() {
+        if (!Files.exists(PROFILES_DIR)) return List.of();
+        List<String> names = new ArrayList<>();
+        try (Stream<Path> stream = Files.list(PROFILES_DIR)) {
+            stream.filter(path -> path.getFileName().toString().endsWith(".json"))
+                    .map(path -> path.getFileName().toString().replace(".json", ""))
+                    .sorted()
+                    .forEach(names::add);
+        } catch (IOException ignored) { }
+        return names;
+    }
+
+    private void saveCurrent(Path file, ModuleManager manager) {
         JsonObject root = new JsonObject();
         for (Module module : manager.getModules()) {
             root.add(module.getName(), serializeModule(module));

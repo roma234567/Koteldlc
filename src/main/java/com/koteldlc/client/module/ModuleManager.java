@@ -1,7 +1,18 @@
 package com.koteldlc.client.module;
 
-import com.koteldlc.client.module.modules.combat.*;
-import com.koteldlc.client.module.modules.movement.*;
+import com.koteldlc.client.config.modules.BypassProfileRepository;
+import com.koteldlc.client.module.impl.SimpleToggleModule;
+import com.koteldlc.client.module.impl.combat.AttackAuraModule;
+import com.koteldlc.client.module.impl.combat.AimAssistModule;
+import com.koteldlc.client.module.impl.combat.AutoTotemModule;
+import com.koteldlc.client.module.impl.combat.SilentHitboxesModule;
+import com.koteldlc.client.module.impl.movement.FlyModule;
+import com.koteldlc.client.module.impl.movement.SpeedModule;
+import com.koteldlc.client.module.impl.visual.ESPModule;
+import com.koteldlc.client.module.modules.combat.AIKillAura;
+import com.koteldlc.client.module.modules.movement.NoFall;
+import com.koteldlc.client.module.modules.movement.Sprint;
+import com.koteldlc.client.module.modules.movement.Strafe;
 import com.koteldlc.client.module.modules.visual.*;
 
 import java.util.ArrayList;
@@ -10,6 +21,7 @@ import java.util.List;
 
 public class ModuleManager {
     private final List<Module> modules = new ArrayList<>();
+    private final BypassProfileRepository bypassProfiles = new BypassProfileRepository();
 
     public void registerDefaults() {
         register(new TriggerBot());
@@ -25,6 +37,11 @@ public class ModuleManager {
         register(new NoFall());
         register(new Sprint());
         register(new Strafe());
+        register(new NoFall());
+        registerBatch(Category.MOVEMENT,
+                "No Web", "Phase", "Target Strafe", "Timer", "Water Leave", "Water Speed", "No Slow",
+                "Wall Climb", "Air Jump", "Auto Jump", "Elytra Target", "Movement Helper"
+        );
 
         register(new ThemeEditor());
 
@@ -34,13 +51,36 @@ public class ModuleManager {
         register(new SneakingESP());
         register(new GlidingESP());
         register(new SleepingESP());
-        register(new TargetESP());
+        registerBatch(Category.RENDER,
+                "Hands", "Interface", "Item Physics", "Particles", "Prediction", "Removals", "See Invisibles",
+                "Shulker Preview", "Sword Animations", "Tags", "Third Person", "Tracers", "Trajectory", "View Model",
+                "Ambience", "Armor Durability View", "Arrows", "Crosshair", "Entity ESP", "Full Bright"
+        );
 
-        // HUD Settings
+        registerBatch(Category.PLAYER,
+                "Auto Tool", "Blink", "Click Pearl", "Fast Break", "Fast Exp", "Instant Respawn",
+                "Item Release", "Item Scroller", "Items Cooldown", "No Entity Trace", "No Interact", "Nuker",
+                "Auto Armor", "Auto Eat", "Auto Potion", "Auto Respawn"
+        );
+
+        registerBatch(Category.MISC,
+                "No Server Rotation", "Open Walls", "Party Point", "Potion Tracker", "Really World Helper",
+                "SRPSpoofer", "Scoreboard Health", "Streamer Mode", "Tape Mouse", "Toggle Sounds", "Use Tracker",
+                "Voice Chat", "Air Place", "Auction Helper", "Auto Accept", "Auto Auth", "Chat Helper", "Discord Activity"
+        );
+
         register(new InGameTimeHUD());
         register(new RealTimeHUD());
         register(new SessionTimeHUD());
         register(new ServerTimeHUD());
+
+        register(new AIKillAura());
+    }
+
+    private void registerBatch(Category category, String... names) {
+        for (String name : names) {
+            register(new SimpleToggleModule(name, name + " module", category));
+        }
     }
 
     public void register(Module module) { modules.add(module); }

@@ -7,7 +7,12 @@
     "MinecraftClientMixin",
     "ClientPlayerEntityMixin",
     "InGameHudMixin",
-    "WorldRendererMixin"
+    "WorldRendererMixin",
+    "MixinMinecraftClient",
+    "MixinPlayerEntity",
+    "MixinWorldRenderer",
+    "MixinEntityRenderer",
+    "MixinGameRenderer"
   ],
   "injectors": {
     "defaultRequire": 1
