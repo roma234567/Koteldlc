@@ -1,5 +1,6 @@
 package com.koteldlc.client;
 
+import com.koteldlc.client.command.CommandManager;
 import com.koteldlc.client.config.ConfigManager;
 import com.koteldlc.client.event.EventBus;
 import com.koteldlc.client.gui.ClickGUI;
@@ -17,12 +18,15 @@ public class KotelDLCClient implements ClientModInitializer {
     public static final KeybindManager KEYBIND_MANAGER = new KeybindManager();
     public static final HudOverlay HUD_OVERLAY = new HudOverlay();
     public static final ClickGUI CLICK_GUI = new ClickGUI();
+    public static final CommandManager COMMAND_MANAGER = new CommandManager(CONFIG_MANAGER);
 
     @Override
     public void onInitializeClient() {
         MODULE_MANAGER.registerDefaults();
         KEYBIND_MANAGER.register(MODULE_MANAGER.getModules());
+        CONFIG_MANAGER.attach(MODULE_MANAGER);
         CONFIG_MANAGER.load(MODULE_MANAGER);
         CLICK_GUI.rebuild(MODULE_MANAGER);
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> CONFIG_MANAGER.save(MODULE_MANAGER)));
     }
 }

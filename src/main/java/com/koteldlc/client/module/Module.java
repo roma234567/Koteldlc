@@ -26,6 +26,10 @@ public abstract class Module {
         return setting;
     }
 
+    public <T extends Setting<?>> T expose(T setting) {
+        return register(setting);
+    }
+
     public void toggle() {
         toggled = !toggled;
         if (toggled) onEnable(); else onDisable();

@@ -1,7 +1,18 @@
 package com.koteldlc.client.module;
 
-import com.koteldlc.client.module.modules.combat.*;
-import com.koteldlc.client.module.modules.movement.*;
+import com.koteldlc.client.config.modules.BypassProfileRepository;
+import com.koteldlc.client.module.impl.SimpleToggleModule;
+import com.koteldlc.client.module.impl.combat.AttackAuraModule;
+import com.koteldlc.client.module.impl.combat.AimAssistModule;
+import com.koteldlc.client.module.impl.combat.AutoTotemModule;
+import com.koteldlc.client.module.impl.combat.SilentHitboxesModule;
+import com.koteldlc.client.module.impl.movement.FlyModule;
+import com.koteldlc.client.module.impl.movement.SpeedModule;
+import com.koteldlc.client.module.impl.visual.ESPModule;
+import com.koteldlc.client.module.modules.combat.AIKillAura;
+import com.koteldlc.client.module.modules.movement.NoFall;
+import com.koteldlc.client.module.modules.movement.Sprint;
+import com.koteldlc.client.module.modules.movement.Strafe;
 import com.koteldlc.client.module.modules.visual.*;
 
 import java.util.ArrayList;
@@ -10,34 +21,70 @@ import java.util.List;
 
 public class ModuleManager {
     private final List<Module> modules = new ArrayList<>();
+    private final BypassProfileRepository bypassProfiles = new BypassProfileRepository();
 
     public void registerDefaults() {
-        register(new TriggerBot());
-        register(new Hitboxes());
-        register(new JumpCircles());
-        register(new Trail());
-        register(new ESP());
-        register(new TargetHUD());
-        register(new KillAura());
-        register(new TeleportAura());
-        register(new Speed());
-        register(new NoFall());
+        register(new AttackAuraModule(bypassProfiles));
+        register(new AimAssistModule(bypassProfiles));
+        register(new SilentHitboxesModule(bypassProfiles));
+        register(new AutoTotemModule());
+
+        registerBatch(Category.COMBAT,
+                "Auto Explosion", "Auto Swap", "Hit Boxes", "No Friend Damage", "No Slot Change", "No Velocity",
+                "Packet Criticals", "Trigger Bot", "WTap", "Web Trap", "Aim Bot", "Anti Bot"
+        );
+
+        register(new SpeedModule(bypassProfiles));
+        register(new FlyModule(bypassProfiles));
         register(new Sprint());
         register(new Strafe());
+        register(new NoFall());
+        registerBatch(Category.MOVEMENT,
+                "No Web", "Phase", "Target Strafe", "Timer", "Water Leave", "Water Speed", "No Slow",
+                "Wall Climb", "Air Jump", "Auto Jump", "Elytra Target", "Movement Helper"
+        );
 
-        // ESP Settings
+        register(new ThemeEditor());
+        register(new ESPModule(bypassProfiles));
+        register(new JumpCircles());
+        register(new Trail());
+        register(new TargetHUD());
+        register(new TargetESP());
         register(new HurtTimeESP());
         register(new InvulnerableESP());
         register(new SneakingESP());
         register(new GlidingESP());
         register(new SleepingESP());
-        register(new TargetESP());
+        registerBatch(Category.RENDER,
+                "Hands", "Interface", "Item Physics", "Particles", "Prediction", "Removals", "See Invisibles",
+                "Shulker Preview", "Sword Animations", "Tags", "Third Person", "Tracers", "Trajectory", "View Model",
+                "Ambience", "Armor Durability View", "Arrows", "Crosshair", "Entity ESP", "Full Bright"
+        );
 
-        // HUD Settings
+        registerBatch(Category.PLAYER,
+                "Auto Tool", "Blink", "Click Pearl", "Fast Break", "Fast Exp", "Instant Respawn",
+                "Item Release", "Item Scroller", "Items Cooldown", "No Entity Trace", "No Interact", "Nuker",
+                "Auto Armor", "Auto Eat", "Auto Potion", "Auto Respawn"
+        );
+
+        registerBatch(Category.MISC,
+                "No Server Rotation", "Open Walls", "Party Point", "Potion Tracker", "Really World Helper",
+                "SRPSpoofer", "Scoreboard Health", "Streamer Mode", "Tape Mouse", "Toggle Sounds", "Use Tracker",
+                "Voice Chat", "Air Place", "Auction Helper", "Auto Accept", "Auto Auth", "Chat Helper", "Discord Activity"
+        );
+
         register(new InGameTimeHUD());
         register(new RealTimeHUD());
         register(new SessionTimeHUD());
         register(new ServerTimeHUD());
+
+        register(new AIKillAura());
+    }
+
+    private void registerBatch(Category category, String... names) {
+        for (String name : names) {
+            register(new SimpleToggleModule(name, name + " module", category));
+        }
     }
 
     public void register(Module module) { modules.add(module); }
