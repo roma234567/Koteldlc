@@ -13,16 +13,8 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class ConfigManager {
-    private static final Path ROOT = Path.of("koteldlc");
-    private static final Path FILE = ROOT.resolve("config.json");
-    private static final Path AI_KILLAURA_FILE = ROOT.resolve("ai-killaura.json");
-    private static final Path PROFILES_DIR = ROOT.resolve("profiles");
-
-    private ModuleManager manager;
-
-    public void attach(ModuleManager manager) {
-        this.manager = manager;
-    }
+    private static final Path FILE = Path.of("koteldlc", "config.json");
+    private static final Path AI_KILLAURA_FILE = Path.of("koteldlc", "ai-killaura.json");
 
     public void save(ModuleManager manager) {
         this.manager = manager;
@@ -67,20 +59,24 @@ public class ConfigManager {
         }
 
         try {
-            Files.createDirectories(file.getParent());
-            Files.writeString(file, new GsonBuilder().setPrettyPrinting().create().toJson(root));
+            Files.createDirectories(FILE.getParent());
+            Files.writeString(FILE, new GsonBuilder().setPrettyPrinting().create().toJson(root));
+            saveAiKillAura(manager);
         } catch (IOException ignored) { }
     }
 
-    private void loadFrom(Path file, ModuleManager manager) {
-        if (!Files.exists(file)) return;
-        try {
-            JsonObject root = JsonParser.parseString(Files.readString(file)).getAsJsonObject();
-            for (Module module : manager.getModules()) {
-                if (!root.has(module.getName())) continue;
-                applyModule(module, root.getAsJsonObject(module.getName()));
-            }
-        } catch (Exception ignored) { }
+    public void load(ModuleManager manager) {
+        if (Files.exists(FILE)) {
+            try {
+                JsonObject root = JsonParser.parseString(Files.readString(FILE)).getAsJsonObject();
+                for (Module module : manager.getModules()) {
+                    if (!root.has(module.getName())) continue;
+                    applyModule(module, root.getAsJsonObject(module.getName()));
+                }
+            } catch (Exception ignored) { }
+        }
+
+        loadAiKillAura(manager);
     }
 
     private JsonObject serializeModule(Module module) {
@@ -124,15 +120,12 @@ public class ConfigManager {
         }
     }
 
-    private void saveAiKillAura(ModuleManager manager) {
+    private void saveAiKillAura(ModuleManager manager) throws IOException {
         Module aiKillAura = manager.getByName("AI KillAura");
         if (aiKillAura == null) {
             return;
         }
-        try {
-            Files.createDirectories(AI_KILLAURA_FILE.getParent());
-            Files.writeString(AI_KILLAURA_FILE, new GsonBuilder().setPrettyPrinting().create().toJson(serializeModule(aiKillAura)));
-        } catch (IOException ignored) { }
+        Files.writeString(AI_KILLAURA_FILE, new GsonBuilder().setPrettyPrinting().create().toJson(serializeModule(aiKillAura)));
     }
 
     private void loadAiKillAura(ModuleManager manager) {

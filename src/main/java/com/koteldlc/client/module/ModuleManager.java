@@ -24,18 +24,17 @@ public class ModuleManager {
     private final BypassProfileRepository bypassProfiles = new BypassProfileRepository();
 
     public void registerDefaults() {
-        register(new AttackAuraModule(bypassProfiles));
-        register(new AimAssistModule(bypassProfiles));
-        register(new SilentHitboxesModule(bypassProfiles));
-        register(new AutoTotemModule());
-
-        registerBatch(Category.COMBAT,
-                "Auto Explosion", "Auto Swap", "Hit Boxes", "No Friend Damage", "No Slot Change", "No Velocity",
-                "Packet Criticals", "Trigger Bot", "WTap", "Web Trap", "Aim Bot", "Anti Bot"
-        );
-
-        register(new SpeedModule(bypassProfiles));
-        register(new FlyModule(bypassProfiles));
+        register(new TriggerBot());
+        register(new Hitboxes());
+        register(new JumpCircles());
+        register(new Trail());
+        register(new ESP());
+        register(new TargetHUD());
+        register(new KillAura());
+        register(new AIKillAura());
+        register(new TeleportAura());
+        register(new Speed());
+        register(new NoFall());
         register(new Sprint());
         register(new Strafe());
         register(new NoFall());
@@ -45,11 +44,8 @@ public class ModuleManager {
         );
 
         register(new ThemeEditor());
-        register(new ESPModule(bypassProfiles));
-        register(new JumpCircles());
-        register(new Trail());
-        register(new TargetHUD());
-        register(new TargetESP());
+
+        // ESP Settings
         register(new HurtTimeESP());
         register(new InvulnerableESP());
         register(new SneakingESP());

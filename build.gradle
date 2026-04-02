@@ -1,0 +1,19 @@
+plugins { 
+    id 'java'
+    id 'maven-publish'
+}
+
+group = 'com.koteldlc'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Add project dependencies here
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
