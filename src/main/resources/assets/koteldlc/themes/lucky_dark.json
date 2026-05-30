@@ -1,0 +1,12 @@
+{
+  "name": "Lucky Dark",
+  "background": "#070708F2",
+  "panel": "#111113E6",
+  "panelHover": "#1A1A1DF2",
+  "accent": "#FFFFFFFF",
+  "accentSoft": "#E6D4A8FF",
+  "text": "#F8F8F8FF",
+  "mutedText": "#8D8D94FF",
+  "cornerRadius": 14,
+  "blur": 22
+}

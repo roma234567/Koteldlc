@@ -1,0 +1,10 @@
+{
+  "views": ["LUCKY_CARDS", "COMPACT_LIST"],
+  "tabs": ["Combat", "Player", "Movement", "Render", "Other"],
+  "layout": {
+    "logo": {"x": 612, "y": 120, "text": "✱"},
+    "nav": {"x": 190, "y": 225, "width": 900, "height": 42},
+    "leftColumn": {"x": 190, "y": 285, "width": 440},
+    "rightColumn": {"x": 640, "y": 285, "width": 440}
+  }
+}

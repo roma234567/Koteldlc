@@ -1,5 +1,0 @@
-package com.koteldlc.client.event.events;
-
-import com.koteldlc.client.event.CancellableEvent;
-
-public class KeyPressEvent extends CancellableEvent { }

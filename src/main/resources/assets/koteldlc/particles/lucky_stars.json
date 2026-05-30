@@ -1,0 +1,6 @@
+{
+  "particle": "lucky_star",
+  "shape": "asterisk",
+  "lifetimeMs": 650,
+  "colors": ["#FFFFFF", "#E6D4A8"]
+}
