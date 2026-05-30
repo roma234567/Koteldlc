@@ -1,4 +1,4 @@
-plugins { 
+plugins {
     id 'java'
     id 'maven-publish'
 }
@@ -11,9 +11,27 @@ repositories {
 }
 
 dependencies {
-    // Add project dependencies here
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
 }
 
-tasks.withType(JavaCompile) {
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+sourceSets {
+    main {
+        java {
+            include 'Kotel/**'
+            exclude 'Kotel/modules/combat/KillAura/**'
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+}
+
+test {
+    useJUnitPlatform()
 }

@@ -1,0 +1,3 @@
+APP_NAME = "KotelDLC"
+MINECRAFT_VERSION = "1.21.4"
+DEFAULT_PROFILE = "safe-client"
