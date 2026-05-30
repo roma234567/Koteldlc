@@ -3,3 +3,7 @@
 *.iml
 .DS_Store
 koteldlc/config.json
+/build/
+/.gradle/
+__pycache__/
+*.py[cod]
